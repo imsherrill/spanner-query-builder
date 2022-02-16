@@ -11,5 +11,14 @@ describe('index', () => {
 
       console.log(query.toSql());
     });
+
+    it('should be able to join', () => {
+      const query = new SpannerQuery()
+        .select('*', 'Contacts')
+        .join('Users', 'Users.userId = Contacts.contactOfUserId')
+        .where({ name: 'Isaac Sherrill' });
+
+      console.log(query.toSql());
+    });
   });
 });

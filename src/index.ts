@@ -5,7 +5,9 @@ export class SpannerQuery {
   clauses: Clause[] = [];
 
   toSql(): string {
-    return _.map(this.clauses, clause => clause.toSql()).join('\n');
+    return _.map(this.clauses, clause => clause.toSql())
+      .join('\n')
+      .concat(';');
   }
 
   pushClause(clause: Clause): void {
@@ -19,6 +21,11 @@ export class SpannerQuery {
 
   forceIndex(indexName: string): SpannerQuery {
     this.pushClause(new ForceIndex(indexName));
+    return this;
+  }
+
+  join(joinTableName: string, onClause: string): SpannerQuery {
+    this.pushClause(new Join(joinTableName, onClause));
     return this;
   }
 
@@ -123,6 +130,22 @@ class Order extends Clause {
     }
 
     return `ORDER BY ${orderExpression} ${this.direction}`;
+  }
+}
+
+class Join extends Clause {
+  joinTableName: string;
+  onClause: string;
+
+  constructor(joinTableName: string, onClause: string) {
+    super();
+
+    this.joinTableName = joinTableName;
+    this.onClause = onClause;
+  }
+
+  toSql(): string {
+    return `JOIN ${this.joinTableName} ON ${this.onClause}`;
   }
 }
 
