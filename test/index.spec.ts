@@ -1,13 +1,15 @@
-import { myPackage } from '../src';
+import { SpannerQuery } from '../src';
 
 describe('index', () => {
-  describe('myPackage', () => {
-    it('should return a string containing the message', () => {
-      const message = 'Hello';
+  describe('SpannerQuery', () => {
+    it('should generate some valid sql (as of now this is just for running code)', () => {
+      const query = new SpannerQuery()
+        .select('*', 'Contacts')
+        .forceIndex('contactOfUserIdForContactsIdx')
+        .where({ phoneNumber: '+19735240600', name: 'Isaac Sherrill' })
+        .order(['id', 'phoneNumber'], 'DESC');
 
-      const result = myPackage(message);
-
-      expect(result).toMatch(message);
+      console.log(query.toSql());
     });
   });
 });
