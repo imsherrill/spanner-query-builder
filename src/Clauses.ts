@@ -24,6 +24,20 @@ export class Select extends Clause {
   }
 }
 
+export class Delete extends Clause {
+  tableName: string;
+
+  constructor(tableName: string) {
+    super();
+
+    this.tableName = tableName;
+  }
+
+  toSql(): string {
+    return `DELETE FROM ${this.tableName}`;
+  }
+}
+
 export class ForceIndex extends Clause {
   indexName: string;
 

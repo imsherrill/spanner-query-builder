@@ -2,7 +2,7 @@ import { SpannerQuery } from '../src';
 
 describe('index', () => {
   describe('SpannerQuery', () => {
-    it('should generate some valid sql', () => {
+    it('should support order', () => {
       const query = new SpannerQuery()
         .select('*', 'Contacts')
         .forceIndex('contactOfUserIdForContactsIdx')
@@ -11,13 +11,24 @@ describe('index', () => {
 
       const queryString = query.toSql();
 
-      console.log(queryString);
-
       const expectedSql = `SELECT * FROM Contacts
 @{FORCE_INDEX="contactOfUserIdForContactsIdx"}
 WHERE phoneNumber = '+19735240600'
 AND name = 'Isaac Sherrill'
 ORDER BY id, phoneNumber DESC;`;
+
+      expect(queryString).toEqual(expectedSql);
+    });
+
+    it('should support delete', () => {
+      const query = new SpannerQuery()
+        .delete('Contacts')
+        .where({ name: 'Isaac Sherrill' });
+
+      const queryString = query.toSql();
+
+      const expectedSql = `DELETE FROM Contacts
+WHERE name = 'Isaac Sherrill';`;
 
       expect(queryString).toEqual(expectedSql);
     });
@@ -30,8 +41,6 @@ ORDER BY id, phoneNumber DESC;`;
         .limit(3);
 
       const queryString = query.toSql();
-
-      console.log(queryString);
 
       const expectedSql = `SELECT * FROM Contacts
 JOIN Users ON Users.userId = Contacts.contactOfUserId
@@ -48,8 +57,6 @@ LIMIT 3;`;
         .where({ name: 'Isaac Sherrill', phoneNumber: '123456' });
 
       const queryString = query.toSql();
-
-      console.log(queryString);
 
       const expectedSql = `SELECT * FROM Contacts
 WHERE name != 'Isaac Sherrill'

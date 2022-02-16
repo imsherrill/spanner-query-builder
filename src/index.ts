@@ -9,6 +9,7 @@ import {
   Order,
   OrderDirection,
   WhereObject,
+  Delete,
 } from './Clauses';
 
 class NotableQuery {
@@ -39,6 +40,11 @@ export class SpannerQuery {
 
   select(columns: string, tableName: string): SpannerQuery {
     this.pushClause(new Select(columns, tableName));
+    return this;
+  }
+
+  delete(tableName: string): SpannerQuery {
+    this.pushClause(new Delete(tableName));
     return this;
   }
 
