@@ -21,5 +21,14 @@ describe('index', () => {
 
       console.log(query.toSql());
     });
+
+    it('should support not', () => {
+      const query = new SpannerQuery()
+        .select('*', 'Contacts')
+        .not()
+        .where({ name: 'Isaac Sherrill' });
+
+      console.log(query.toSql());
+    });
   });
 });

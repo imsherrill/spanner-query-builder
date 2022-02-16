@@ -29,8 +29,8 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     "no-trailing-spaces": 2,
-    "jest/no-identical-title": 2,
-    "import/no-default-export": 1,
+    // "jest/no-identical-title": 2,
+    // "import/no-default-export": 1,
     "eqeqeq": [
       "error",
       "smart"
