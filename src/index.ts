@@ -39,6 +39,11 @@ export class SpannerQuery {
     return this;
   }
 
+  limit(limitNum: number): SpannerQuery {
+    this.pushClause(new Limit(limitNum));
+    return this;
+  }
+
   order(
     orderColumn: string | string[],
     direction: OrderDirection = 'ASC'
@@ -146,6 +151,20 @@ class Join extends Clause {
 
   toSql(): string {
     return `JOIN ${this.joinTableName} ON ${this.onClause}`;
+  }
+}
+
+class Limit extends Clause {
+  limit: number;
+
+  constructor(limit: number) {
+    super();
+
+    this.limit = limit;
+  }
+
+  toSql(): string {
+    return `LIMIT ${this.limit}`;
   }
 }
 

@@ -16,7 +16,8 @@ describe('index', () => {
       const query = new SpannerQuery()
         .select('*', 'Contacts')
         .join('Users', 'Users.userId = Contacts.contactOfUserId')
-        .where({ name: 'Isaac Sherrill' });
+        .where({ name: 'Isaac Sherrill' })
+        .limit(3);
 
       console.log(query.toSql());
     });
